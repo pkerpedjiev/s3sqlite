@@ -69,7 +69,7 @@ class SmartOpenVFS(apsw.VFS):
         Args:
           * name: S3 path of the file (bucket + prefix + filename)
           * block_size: Block size used by the filesystem.
-          * file_kwargs: Extra arguments to pass when calling the open() method of fs (s3fs)
+          * file_kwargs: Extra arguments to pass when calling the open() method of fs (smartopen)
                          This may be useful to configure the cache strategy used by the S3FileSystem
         """
         self.name = f"{name}-{str(uuid.uuid4())}"
@@ -106,6 +106,7 @@ class SmartOpenVFS(apsw.VFS):
         )
 
         print("smart_open", name)
+        
         ofile = sopen(
             fname, mode="rb", **self.file_kwargs
         )
@@ -206,7 +207,7 @@ class VFSFile(apsw.VFSFile):
         )
         self.f.seek(offset)
         data = self.f.read(amount)
-        logger.debug(f"Read data: {data}")
+        # logger.debug(f"Read data: {data}")
         return data
 
     def xFileControl(self, *args):
